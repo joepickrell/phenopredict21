@@ -30,6 +30,7 @@ def readVCF(vcffile, snps):
 	infile = gzip.open(vcffile)
 	toreturn = dict()
 	line = infile.readline()
+	i = 0
 	while line:
 		line = bytes.decode(line)
 		line = line.strip().split()
@@ -37,9 +38,9 @@ def readVCF(vcffile, snps):
 			line = infile.readline()
 			continue
 		# Using chr:pos as unique identifier
+		if i % 10000 == 0:
+			print('\r>> Scanned %d variants in VCF' % i, end='\r')
 		id = line[0]+":"+line[1]
-		if line[2] == "rs1752684":
-			print(line) 
 		if id in snps: 
 			print(line)
 			ref = line[3]
@@ -58,6 +59,7 @@ def readVCF(vcffile, snps):
 			a2 = ref
 			if geno[2] == "1": a2 = alt
 			toreturn[id] = {'a1': a1, 'a2': a2}
+		i = i+1
 		line = infile.readline()
 	return toreturn
 		
