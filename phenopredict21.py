@@ -1,6 +1,7 @@
 import sys, gzip
 import json
 import click
+import math
 
 #import from the 21 Developer Library
 from two1.commands.config import Config
@@ -64,7 +65,6 @@ def readVCF(vcffile, snps):
 		
 def predict(phenomodel, vcffile):
 	allsnps = listsnps(phenomodel)
-	print(allsnps)
 	vcfsnps = readVCF(vcffile, allsnps)
 	ngt = 0
 	nmiss = 0
@@ -77,14 +77,11 @@ def predict(phenomodel, vcffile):
 		c = snp['chr'][3:]
 		p = snp['pos']
 		id = c+":"+str(p)
-		print(id)
-		print(vcfsnps)
 		if id in vcfsnps:
 			effect = snp['alt_effect_het']
 			alt = snp['alt']
 			ref = snp['ref']
 			gt = vcfsnps[id]
-			print(snp)
 			if gt['a1'] != alt and gt['a1'] != ref:
 				click.echo('bad snp genotype '+gt['a1']+','+gt['a2']+', alleles are '+ref+' and '+alt+' ('+c+':'+p+')\n')	
 				nmiss = nmiss+1
@@ -98,8 +95,9 @@ def predict(phenomodel, vcffile):
 			ngt = ngt+1	
 		else:
 			nmiss = nmiss+1			
-		
-	return {'score': score, 'meanscore': meanscore, 'ngt': ngt, 'nmiss':nmiss}
+
+	odds = math.exp(score-meanscore)		
+	return {'odds': odds, 'score': score, 'meanscore': meanscore, 'ngt': ngt, 'nmiss':nmiss}
 
 @click.command()
 @click.option('--pheno', help = 'Phenotype to predict')
