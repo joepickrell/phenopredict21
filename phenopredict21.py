@@ -42,7 +42,6 @@ def readVCF(vcffile, snps):
 			print('\r>> Scanned %d variants in VCF' % i, end='\r')
 		id = line[0]+":"+line[1]
 		if id in snps: 
-			print(line)
 			ref = line[3]
 			alt = line[4]
 			gtid = -9
@@ -67,8 +66,40 @@ def predict(phenomodel, vcffile):
 	allsnps = listsnps(phenomodel)
 	print(allsnps)
 	vcfsnps = readVCF(vcffile, allsnps)
-	print(vcfsnps)
-	return
+	ngt = 0
+	nmiss = 0
+	score = 0
+	meanscore = 0
+	snpvectors = phenomodel['snps']
+	# going to use only the first SNP in each vector (remainder are backup SNPs in LD in case primary not genotypes)
+	for snpvector in snpvectors:
+		snp = snpvector[0]
+		c = snp['chr'][3:]
+		p = snp['pos']
+		id = c+":"+str(p)
+		print(id)
+		print(vcfsnps)
+		if id in vcfsnps:
+			effect = snp['alt_effect_het']
+			alt = snp['alt']
+			ref = snp['ref']
+			gt = vcfsnps[id]
+			print(snp)
+			if gt['a1'] != alt and gt['a1'] != ref:
+				click.echo('bad snp genotype '+gt['a1']+','+gt['a2']+', alleles are '+ref+' and '+alt+' ('+c+':'+p+')\n')	
+				nmiss = nmiss+1
+				continue
+			if gt['a1'] == alt:
+				score=  score+effect
+			if gt['a2'] == alt:
+				score = score+effect
+			euf = snp['eur_af']
+			meanscore = meanscore+2*euf*effect
+			ngt = ngt+1	
+		else:
+			nmiss = nmiss+1			
+		
+	return {'score': score, 'meanscore': meanscore, 'ngt': ngt, 'nmiss':nmiss}
 
 @click.command()
 @click.option('--pheno', help = 'Phenotype to predict')
@@ -84,9 +115,10 @@ def cli(pheno, phenos, vcf):
 		return
  
 	if pheno in ps['phenolist']:
-        	url2 = server_url+'phenos/'+pheno
-        	response = requests.get(url=url2)
-        	model = json.loads(response.text)
-        	predict(model, vcf)
+		url2 = server_url+'phenos/'+pheno
+		response = requests.get(url=url2)
+		model = json.loads(response.text)
+		prediction = predict(model, vcf)
+		click.echo(json.dumps(prediction))
 	else:
 		click.echo('no phenotype: '+pheno)
