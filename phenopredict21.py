@@ -96,8 +96,13 @@ def predict(phenomodel, vcffile):
 		else:
 			nmiss = nmiss+1			
 
-	odds = math.exp(score-meanscore)		
-	return {'odds': odds, 'score': score, 'meanscore': meanscore, 'ngt': ngt, 'nmiss':nmiss}
+	odds = math.exp(score-meanscore)
+	baselinerisk = phenomodel['baseline_prob']
+	baselineodds = baselinerisk/(1-baselinerisk)
+	absodds = baselineodds*odds
+	absrisk = absodds/(1+absodds)
+			
+	return {'odds': odds, 'absolute_risk': absrisk, 'average_risk': baselinerisk, 'score': score, 'meanscore': meanscore, 'ngt': ngt, 'nmiss':nmiss}
 
 @click.command()
 @click.option('--pheno', help = 'Phenotype to predict')
