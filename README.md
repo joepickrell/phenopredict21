@@ -16,5 +16,29 @@ Right now the server only has a model for predicting Alzheimer's disease.
 
 ## Run ##
 
->phenoredict21 --pheno AD --vcf vcf/chr19.vcf.gz
+>phenopredict21 --pheno AD --vcf vcf/chr19.vcf.gz
+
+
+## Options ##
+
+To see a list of available phenotypes, use the --phenos flag:
+
+>phenopredict21 --phenos
+
+Right now this will return only "AD", for Alzheimer's disease
+
+To input a VCF file and a phenotype, use --pheno and --vcf, as in the example above
+
+## Output ##
+
+The output is a dict in JSON with the following entries:
+
+1. 'odds': odds of developing the disease, relative to the average European-descent individual
+2. 'absolute_risk': the absolute probability of developing the disease, calculated using the odds and the baseline probability
+3. 'average_risk': the probability of developing the disease for an average person in the population (this is used as the baseline for calculating the absolute risk, and so this has a large effect on the risk calculation)
+4. 'score': the polygenic risk score for the individual, used to calculate the odds
+5. 'meanscore': the polygenic risk score for an average person of European ancestry
+6. 'ngt': the number of SNPs in the risk prediction model that are also in the VCF file
+7. 'nmiss': the number of SNPs in the risk prediction model that are absent from the VCF file
+
 
