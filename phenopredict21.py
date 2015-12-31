@@ -14,7 +14,7 @@ username = Config().username
 requests = BitTransferRequests(wallet, username)
 
 #server address
-server_url = 'http://localhost:5000/'
+server_url = 'http://10.244.88.105:5000/'
 
 
 def listsnps(phenomodel):
