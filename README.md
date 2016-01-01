@@ -2,7 +2,7 @@
 
 Predict phenotypes and/or probabilities of disease from a VCF file on the 21 Bitcoin Computer. 
 
-The setup is: you have a genome sequence in a VCF file*, and want to predict the phenotypes of the person who the genome belongs to. This command line tool pulls a phenotype prediction model from an external server that hosts the model in JSON (https://github.com/joepickrell/pheno-server-21) and then returns the prediction. 
+The setup is: you have a genome sequence in a VCF file*, and want to predict the phenotypes of the person who the genome belongs to. This command line tool pulls a phenotype prediction model from an external server that hosts the model in JSON (https://github.com/joepickrell/pheno-server-21) in exchange for BTC and then returns the prediction. 
 
 Right now the server only has a model for predicting Alzheimer's disease risk (and note there are lots of caveats to risk prediction, this is intended only as a toy example). 
 
