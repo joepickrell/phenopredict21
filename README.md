@@ -2,11 +2,11 @@
 
 Predict phenotypes and/or probabilities of disease from a VCF file on the 21 Bitcoin Computer. 
 
-The setup is: you have a genome sequence in a VCF file, and want to predict the phenotypes of the person who the genome belongs to. This command line tool pulls a phenotype prediction model from an external server that hosts the model in JSON (https://github.com/joepickrell/pheno-server-21) and then returns the prediction. 
+The setup is: you have a genome sequence in a VCF file*, and want to predict the phenotypes of the person who the genome belongs to. This command line tool pulls a phenotype prediction model from an external server that hosts the model in JSON (https://github.com/joepickrell/pheno-server-21) and then returns the prediction. 
 
 Right now the server only has a model for predicting Alzheimer's disease risk (and note there are lots of caveats to risk prediction, this is intended only as a toy example). 
 
-To obtain your genome sequence, there are a few options (I am not affiliated with any of these except where noted): You could get whole genome sequencing from places like [Full Genomes](https://www.fullgenomes.com/), or get genotyped by companies like [23andMe](https://www.23andme.com/) or [AncestryDNA](http://dna.ancestry.com/). In the latter case, you will probabably want to do [genotype imputation](https://en.wikipedia.org/wiki/Imputation_(genetics)) using functionality avaiable from places like [DNA.Land](https://dna.land/) (Note: I am affiliated with DNA Land). 
+*To obtain your genome sequence, there are a few options (I am not affiliated with any of these except where noted): You could get whole genome sequencing from places like [Full Genomes](https://www.fullgenomes.com/), or get genotyped by companies like [23andMe](https://www.23andme.com/) or [AncestryDNA](http://dna.ancestry.com/). In the latter case, you will probabably want to do [genotype imputation](https://en.wikipedia.org/wiki/Imputation_(genetics)) using functionality avaiable from places like [DNA.Land](https://dna.land/) (Note: I am affiliated with DNA Land). 
 
 ## Set up ##
 
